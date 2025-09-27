@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Video Grid</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0d6efd;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .video-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      border: none;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .video-card .video-info {
+      padding: 0.8rem 1rem;
+    }
+
+    .video-card .video-info h5 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .video-card .video-info p {
+      font-size: 0.85rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>YouTube Videos</h1>
+
+    <!-- Grid container -->
+    <div id="videoGrid" class="row g-3">
+      <!-- Video cards will be injected here -->
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Predefined subject variable
+    const subject = "Python tutorials"; // Change this as needed
+
+    // Fetch videos from backend
+    async function fetchVideos(query) {
+      const resp = await fetch('/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: query, maxResults: 12 }) // Fetch 12 videos
+      });
+      return resp.json();
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(str){
+      if(!str) return '';
+      return str.replaceAll('&','&amp;')
+                .replaceAll('<','&lt;')
+                .replaceAll('>','&gt;');
+    }
+
+    // Build the grid of video cards
+    function buildGrid(videos) {
+      if (!videos || videos.length === 0) return '<p>No videos found.</p>';
+
+      const container = document.getElementById('videoGrid');
+      container.innerHTML = ''; // Clear existing content
+
+      videos.forEach(v => {
+        const col = document.createElement('div');
+        col.className = 'col-12 col-md-6 col-lg-4'; // 3 per row on large screens
+
+        col.innerHTML = `
+          <div class="video-card">
+            <div class="ratio ratio-16x9">
+              <iframe src="https://www.youtube.com/embed/${v.id}" title="${escapeHtml(v.title)}" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <h5>${escapeHtml(v.title)}</h5>
+              <p>${escapeHtml(v.description || '')}</p>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    // Fetch and display videos when page loads
+    window.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('videoGrid');
+      container.innerHTML = '<p>Loading videos...</p>';
+      const data = await fetchVideos(subject);
+      if (data.error) {
+        container.innerHTML = `<div class="alert alert-danger">${escapeHtml(data.error)}</div>`;
+        return;
+      }
+      buildGrid(data.videos);
+    });
+  </script>
+</body>
+</html>
