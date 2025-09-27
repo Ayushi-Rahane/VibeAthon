@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduTrack{% endblock %}</title>
+    {% block head %}
+    <!-- Default CSS and head includes -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_panel.css') }}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    {% endblock %}
+</head>
+<body>
+    {% block navbar %}
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="EduTrack Logo">
+            </div>
+            <span class="app-name">EduTrack</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                
+                <li><a href="{{ url_for('recommendations') }}">
+                    <i class="uil uil-lightbulb-alt"></i>
+                    <span class="link-name">Recommendations</span>
+                </a></li>
+                
+                <li><a href="{{ url_for('analytics') }}">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Analytics</span>
+                </a></li>
+                
+                <li><a href="{{ url_for('logout') }}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% endblock %}
+
+    {% block content %}
+    <!-- Page-specific content goes here -->
+    {% endblock %}
+</body>
+</html>
