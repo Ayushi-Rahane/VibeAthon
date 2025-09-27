@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Study Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        .streak-fire {
+            animation: fire-flicker 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes fire-flicker {
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.1) rotate(1deg); }
+        }
+        
+        .notification-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .chart-bar {
+            transition: height 0.8s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Onboarding Page -->
+    <div id="onboarding" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">📚</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Personal Study Companion</h1>
+                <p class="text-gray-600">Let's personalize your learning journey</p>
+            </div>
+            
+            <form id="onboardingForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                    <input type="text" id="studentName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your name" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Grade Level</label>
+                    <select id="gradeLevel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                        <option value="">Select your grade</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                        <option value="9">Grade 9</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Subjects of Interest</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="Math" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">📊 Math</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="Science" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">🔬 Science</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="English" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">📖 English</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="History" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">🏛️ History</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="Art" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">🎨 Art</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" name="subjects" value="Music" class="rounded text-purple-600 focus:ring-purple-500">
+                            <span class="text-sm">🎵 Music</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    Start My Journey 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Navigation -->
+        <nav class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">📚</span>
+                        <span class="font-bold text-xl text-gray-800">Study Companion</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="notificationBtn" class="p-2 text-gray-600 hover:text-gray-800 relative">
+                                <span class="text-xl">🔔</span>
+                                <span class="notification-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                <span class="text-sm">👤</span>
+                            </div>
+                            <span id="navUserName" class="text-sm font-medium text-gray-700">Student</span>
+                        </div>
+                        <button id="logoutBtn" class="text-sm text-gray-600 hover:text-gray-800">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <div class="w-64 bg-white shadow-sm h-screen sticky top-0">
+                <div class="p-6">
+                    <nav class="space-y-2">
+                        <a href="#" onclick="showPage('dashboard')" class="nav-item flex items-center space-x-3 px-4 py-3 text-purple-600 bg-purple-50 rounded-lg">
+                            <span>🏠</span>
+                            <span class="font-medium">Dashboard</span>
+                        </a>
+                        <a href="#" onclick="showPage('goals')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                            <span>🎯</span>
+                            <span class="font-medium">Goals</span>
+                        </a>
+                        <a href="#" onclick="showPage('rewards')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                            <span>🏆</span>
+                            <span class="font-medium">Rewards</span>
+                        </a>
+                        <a href="#" onclick="showPage('progress')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                            <span>📈</span>
+                            <span class="font-medium">Progress</span>
+                        </a>
+                        <a href="#" onclick="showPage('notifications')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                            <span>🔔</span>
+                            <span class="font-medium">Notifications</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 p-6">
+                <!-- Dashboard Content -->
+                <div id="dashboardContent">
+                    <div class="mb-8">
+                        <h1 id="welcomeMessage" class="text-3xl font-bold text-gray-800 mb-2">Hello, Student! 👋</h1>
+                        <p class="text-gray-600">Ready to continue your learning journey?</p>
+                    </div>
+
+                    <!-- Progress Overview -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Progress</h2>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                    <span>Daily Goal</span>
+                                    <span id="progressText">3/5 tasks</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div id="progressBar" class="progress-bar bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="text-2xl">⭐</div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Goals -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Goals</h2>
+                        <div id="todayGoals" class="space-y-3">
+                            <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                <input type="checkbox" class="goal-checkbox rounded text-purple-600" data-goal="math">
+                                <span class="flex-1">Complete Math Chapter 5 exercises</span>
+                                <span class="text-sm text-gray-500">📊</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                <input type="checkbox" class="goal-checkbox rounded text-purple-600" data-goal="science" checked>
+                                <span class="flex-1 line-through text-gray-500">Read Science article on photosynthesis</span>
+                                <span class="text-sm text-gray-500">🔬</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                <input type="checkbox" class="goal-checkbox rounded text-purple-600" data-goal="english" checked>
+                                <span class="flex-1 line-through text-gray-500">Write English essay outline</span>
+                                <span class="text-sm text-gray-500">📖</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recommended for You</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="card-hover bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                                <div class="text-2xl mb-2">📐</div>
+                                <h3 class="font-semibold text-gray-800 mb-1">Geometry Quiz</h3>
+                                <p class="text-sm text-gray-600 mb-3">Test your triangle knowledge</p>
+                                <button class="text-blue-600 text-sm font-medium hover:text-blue-700">Start Quiz →</button>
+                            </div>
+                            <div class="card-hover bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                                <div class="text-2xl mb-2">🧪</div>
+                                <h3 class="font-semibold text-gray-800 mb-1">Chemistry Lab</h3>
+                                <p class="text-sm text-gray-600 mb-3">Virtual experiments await</p>
+                                <button class="text-green-600 text-sm font-medium hover:text-green-700">Explore →</button>
+                            </div>
+                            <div class="card-hover bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                                <div class="text-2xl mb-2">📚</div>
+                                <h3 class="font-semibold text-gray-800 mb-1">Reading Challenge</h3>
+                                <p class="text-sm text-gray-600 mb-3">Improve comprehension skills</p>
+                                <button class="text-purple-600 text-sm font-medium hover:text-purple-700">Read Now →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals Page -->
+                <div id="goalsContent" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Daily Learning Goals 🎯</h1>
+                        <p class="text-gray-600">Set and track your learning objectives</p>
+                    </div>
+
+                    <!-- Add New Goal -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Add New Goal</h2>
+                        <form id="goalForm" class="flex space-x-4">
+                            <input type="text" id="newGoalInput" placeholder="Enter your learning goal..." class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                                Add Goal ➕
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Goals List -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Goals</h2>
+                        <div id="goalsList" class="space-y-4">
+                            <!-- Goals will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rewards Page -->
+                <div id="rewardsContent" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Rewards & Achievements 🏆</h1>
+                        <p class="text-gray-600">Celebrate your learning milestones</p>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border border-yellow-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-yellow-600 text-sm font-medium">Total Points</p>
+                                    <p class="text-2xl font-bold text-yellow-800">1,247</p>
+                                </div>
+                                <div class="text-3xl">⭐</div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-orange-600 text-sm font-medium">Learning Streak</p>
+                                    <p class="text-2xl font-bold text-orange-800 flex items-center">
+                                        <span class="streak-fire mr-2">🔥</span> 5 days
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-purple-600 text-sm font-medium">Badges Earned</p>
+                                    <p class="text-2xl font-bold text-purple-800">12</p>
+                                </div>
+                                <div class="text-3xl">🏅</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Badges</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-4xl mb-2">🥇</div>
+                                <p class="text-sm font-medium text-gray-800">First Goal</p>
+                                <p class="text-xs text-gray-600">Completed your first learning goal</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-4xl mb-2">📚</div>
+                                <p class="text-sm font-medium text-gray-800">Bookworm</p>
+                                <p class="text-xs text-gray-600">Read 10 articles</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-4xl mb-2">🔥</div>
+                                <p class="text-sm font-medium text-gray-800">Streak Master</p>
+                                <p class="text-xs text-gray-600">5-day learning streak</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg opacity-50">
+                                <div class="text-4xl mb-2">🎯</div>
+                                <p class="text-sm font-medium text-gray-800">Goal Crusher</p>
+                                <p class="text-xs text-gray-600">Complete 50 goals</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Page -->
+                <div id="progressContent" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Progress Reports 📈</h1>
+                        <p class="text-gray-600">Track your learning journey</p>
+                    </div>
+
+                    <!-- Weekly Progress -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Weekly Progress</h2>
+                        <div class="flex items-end space-x-4 h-40">
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-purple-500 w-8 rounded-t" style="height: 60%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Mon</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-purple-500 w-8 rounded-t" style="height: 80%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Tue</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-purple-500 w-8 rounded-t" style="height: 45%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Wed</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-purple-500 w-8 rounded-t" style="height: 90%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Thu</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-purple-500 w-8 rounded-t" style="height: 70%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Fri</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-gray-300 w-8 rounded-t" style="height: 30%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Sat</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="chart-bar bg-gray-300 w-8 rounded-t" style="height: 20%"></div>
+                                <span class="text-xs text-gray-600 mt-2">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subject Performance -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Subject Performance</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-xl">📊</span>
+                                    <span class="font-medium">Math</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">85%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-xl">🔬</span>
+                                    <span class="font-medium">Science</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">92%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-xl">📖</span>
+                                    <span class="font-medium">English</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-500 h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">78%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Page -->
+                <div id="notificationsContent" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Notifications & Reminders 🔔</h1>
+                        <p class="text-gray-600">Stay on top of your learning schedule</p>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Notification Settings</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="font-medium text-gray-700">Daily Goal Reminders</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="font-medium text-gray-700">Study Break Alerts</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="font-medium text-gray-700">Achievement Notifications</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Notifications -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Notifications</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                <span class="text-xl">📚</span>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">New lesson available!</p>
+                                    <p class="text-sm text-gray-600">Your Math teacher uploaded "Quadratic Equations"</p>
+                                    <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                                <span class="text-xl">🎯</span>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Goal completed!</p>
+                                    <p class="text-sm text-gray-600">You finished "Read Science article on photosynthesis"</p>
+                                    <p class="text-xs text-gray-500 mt-1">4 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                                <span class="text-xl">⏰</span>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Study reminder</p>
+                                    <p class="text-sm text-gray-600">Don't forget to complete your Math exercises today!</p>
+                                    <p class="text-xs text-gray-500 mt-1">6 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userData = {
+            name: '',
+            grade: '',
+            subjects: [],
+            goals: [
+                { id: 1, text: 'Complete Math Chapter 5 exercises', completed: false, subject: 'Math' },
+                { id: 2, text: 'Read Science article on photosynthesis', completed: true, subject: 'Science' },
+                { id: 3, text: 'Write English essay outline', completed: true, subject: 'English' },
+                { id: 4, text: 'Practice French vocabulary', completed: false, subject: 'French' },
+                { id: 5, text: 'Review History timeline', completed: false, subject: 'History' }
+            ]
+        };
+
+        // Onboarding form submission
+        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const grade = document.getElementById('gradeLevel').value;
+            const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
+            
+            if (name && grade && subjects.length > 0) {
+                userData.name = name;
+                userData.grade = grade;
+                userData.subjects = subjects;
+                
+                // Update UI with user data
+                document.getElementById('welcomeMessage').textContent = `Hello, ${name}! 👋`;
+                document.getElementById('navUserName').textContent = name;
+                
+                // Show dashboard
+                document.getElementById('onboarding').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                
+                // Initialize dashboard
+                updateProgress();
+                renderGoals();
+            }
+        });
+
+        // Navigation
+        function showPage(page) {
+            // Hide all content
+            document.querySelectorAll('[id$="Content"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected content
+            document.getElementById(page + 'Content').classList.remove('hidden');
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('text-purple-600', 'bg-purple-50');
+                item.classList.add('text-gray-600');
+            });
+            
+            event.target.closest('.nav-item').classList.remove('text-gray-600');
+            event.target.closest('.nav-item').classList.add('text-purple-600', 'bg-purple-50');
+        }
+
+        // Goal management
+        document.getElementById('goalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const goalText = document.getElementById('newGoalInput').value.trim();
+            
+            if (goalText) {
+                const newGoal = {
+                    id: Date.now(),
+                    text: goalText,
+                    completed: false,
+                    subject: 'General'
+                };
+                
+                userData.goals.push(newGoal);
+                document.getElementById('newGoalInput').value = '';
+                renderGoals();
+                updateProgress();
+                
+                // Show success animation
+                createConfetti();
+            }
+        });
+
+        function renderGoals() {
+            const goalsList = document.getElementById('goalsList');
+            const todayGoals = document.getElementById('todayGoals');
+            
+            // Render goals page
+            goalsList.innerHTML = userData.goals.map(goal => `
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" ${goal.completed ? 'checked' : ''} 
+                               onchange="toggleGoal(${goal.id})" 
+                               class="rounded text-purple-600">
+                        <span class="${goal.completed ? 'line-through text-gray-500' : ''}">${goal.text}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500 px-2 py-1 bg-white rounded">${goal.subject}</span>
+                        <button onclick="deleteGoal(${goal.id})" class="text-red-500 hover:text-red-700">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Render dashboard goals (first 3)
+            todayGoals.innerHTML = userData.goals.slice(0, 3).map(goal => `
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <input type="checkbox" ${goal.completed ? 'checked' : ''} 
+                           onchange="toggleGoal(${goal.id})" 
+                           class="goal-checkbox rounded text-purple-600">
+                    <span class="flex-1 ${goal.completed ? 'line-through text-gray-500' : ''}">${goal.text}</span>
+                    <span class="text-sm text-gray-500">${getSubjectIcon(goal.subject)}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleGoal(goalId) {
+            const goal = userData.goals.find(g => g.id === goalId);
+            if (goal) {
+                goal.completed = !goal.completed;
+                renderGoals();
+                updateProgress();
+                
+                if (goal.completed) {
+                    createConfetti();
+                }
+            }
+        }
+
+        function deleteGoal(goalId) {
+            userData.goals = userData.goals.filter(g => g.id !== goalId);
+            renderGoals();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const completedGoals = userData.goals.filter(g => g.completed).length;
+            const totalGoals = userData.goals.length;
+            const percentage = totalGoals > 0 ? (completedGoals / totalGoals) * 100 : 0;
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${completedGoals}/${totalGoals} tasks`;
+        }
+
+        function getSubjectIcon(subject) {
+            const icons = {
+                'Math': '📊',
+                'Science': '🔬',
+                'English': '📖',
+                'History': '🏛️',
+                'Art': '🎨',
+                'Music': '🎵',
+                'French': '🇫🇷',
+                'General': '📚'
+            };
+            return icons[subject] || '📚';
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.backgroundColor = ['#f39c12', '#e74c3c', '#9b59b6', '#3498db', '#2ecc71'][Math.floor(Math.random() * 5)];
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('onboarding').classList.remove('hidden');
+            
+            // Reset form
+            document.getElementById('onboardingForm').reset();
+        });
+
+        // Notification button
+        document.getElementById('notificationBtn').addEventListener('click', function() {
+            showPage('notifications');
+        });
+
+        // Initialize
+        renderGoals();
+        updateProgress();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9858afe5f01a6ed1',t:'MTc1ODk1MTg0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
