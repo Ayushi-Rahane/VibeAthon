@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | EduTrack</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="title">EduTrack Login</div>
+    <form action="{{ url_for('login') }}" method="POST">
+      
+      <!-- Username -->
+      <div class="row">
+        <i class="uil uil-user"></i>
+        <input type="text" name="username" placeholder="Enter your email" required>
+      </div>
+      
+      <!-- Password -->
+      <div class="row">
+        <i class="uil uil-lock"></i>
+        <input type="password" name="password" placeholder="Enter your password" required>
+      </div>
+      
+      <!-- Forgot Password -->
+      <div class="pass">
+        <a href="#">Forgot password?</a>
+      </div>
+      
+      <!-- Login Button -->
+      <div class="row button">
+        <input type="submit" value="Login">
+      </div>
+      
+      <!-- Signup Link -->
+      <div class="signup-link">
+        Not a member? <a href="{{ url_for('onboarding') }}">Sign up now</a>
+      </div>
+      
+      <!-- Error Display -->
+      {% if error %}
+      <p style="color:red; text-align:center; margin-top:10px;">{{ error }}</p>
+      {% endif %}
+    </form>
+  </div>
+</body>
+</html>

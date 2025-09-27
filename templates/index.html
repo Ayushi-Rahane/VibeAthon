@@ -1,190 +1,89 @@
 {% extends "base.html" %}
 
-{% block title %}Student Dashboard | EduTrack{% endblock %}
+{% block title %}Dashboard | EduTrack{% endblock %}
 
 {% block content %}
 <section class="dashboard">
-    <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
-        <div class="search-box">
-            <i class="uil uil-search"></i>
-            <input type="text" placeholder="Search topics, lessons...">
-        </div>
-        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+  <div class="top">
+    <i class="uil uil-bars sidebar-toggle"></i>
+    <div class="search-box">
+      <i class="uil uil-search"></i>
+      <input type="text" placeholder="Search topics, lessons...">
     </div>
+    <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+  </div>
 
-    <div class="dash-content">
-        <!-- Welcome Section -->
-        <div class="title">
-            <i class="uil uil-user"></i>
-            <span class="text">Welcome, {{ student.Name }}</span>
-        </div>
-        <p><strong>Grade:</strong> {{ student.Grade }} | <strong>Subjects:</strong> {{ student.Subjects }}</p>
-
-        <!-- Goals Section -->
-        <div class="title">
-            <i class="uil uil-bullseye"></i>
-            <span class="text">Your Goals</span>
-        </div>
-
-        <form action="{{ url_for('add_goal') }}" method="POST" class="goal-form">
-            <input type="text" name="goal" placeholder="Enter your study goal (e.g. Watch 2 videos)" required>
-            <button type="submit" class="btn btn-primary">Add Goal</button>
-        </form>
-
-        <ul class="goal-list">
-            {% for goal in goals %}
-            <li>
-                {{ goal.Goal_Text }} - <span class="status">{{ goal.Status }}</span>
-                {% if goal.Status != "Completed" %}
-                <a href="{{ url_for('complete_goal', goal_id=goal.Goal_ID) }}" class="btn btn-success">Mark Done</a>
-                {% endif %}
-            </li>
-            {% else %}
-            <li>No goals set yet.</li>
-            {% endfor %}
-        </ul>
-
-        <!-- Study Progress Section -->
-        <div class="title">
-            <i class="uil uil-clipboard-alt"></i>
-            <span class="text">Recent Progress</span>
-        </div>
-
-        <form action="{{ url_for('add_progress') }}" method="POST" class="progress-form">
-            <input type="date" name="date" required>
-            <input type="text" name="subject" placeholder="Subject (e.g. Math)" required>
-            <input type="text" name="activity" placeholder="Activity (e.g. Completed 2 chapters)" required>
-            <textarea name="notes" placeholder="Extra notes (optional)"></textarea>
-            <button type="submit" class="btn btn-primary">Add Progress</button>
-        </form>
-
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Subject</th>
-                    <th>Activity</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in recent_progress %}
-                <tr>
-                    <td>{{ p.Date }}</td>
-                    <td>{{ p.Subject }}</td>
-                    <td>{{ p.Activity }}</td>
-                    <td>{{ p.Notes or '-' }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4">No progress reports yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Recommendations -->
-        <div class="title">
-            <i class="uil uil-lightbulb-alt"></i>
-            <span class="text">Recommended for You</span>
-        </div>
-        <a href="{{ url_for('recommendations') }}" class="btn btn-info">View Recommendations</a>
+  <div class="dash-content">
+    <!-- Welcome Section -->
+    <div class="title">
+      <i class="uil uil-user"></i>
+      <span class="text">Welcome, {{ student.Name }}</span>
     </div>
-</section>
-{% endblock %}
-{% extends "base.html" %}
+    <p><strong>Grade:</strong> {{ student.Grade }} | <strong>Subjects:</strong> {{ student.Subjects }}</p>
 
-{% block title %}Student Dashboard | EduTrack{% endblock %}
-
-{% block content %}
-<section class="dashboard">
-    <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
-        <div class="search-box">
-            <i class="uil uil-search"></i>
-            <input type="text" placeholder="Search topics, lessons...">
-        </div>
-        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+    <!-- Goals Section -->
+    <div class="title">
+      <i class="uil uil-bullseye"></i>
+      <span class="text">Your Goals</span>
     </div>
+    <form action="{{ url_for('add_goal') }}" method="POST" class="goal-form">
+      <input type="text" name="goal" placeholder="Enter a study goal" required>
+      <button type="submit" class="btn btn-primary">Add Goal</button>
+    </form>
+    <ul class="goal-list">
+      {% for goal in goals %}
+      <li>
+        {{ goal.Goal_Text }} - <span class="status">{{ goal.Status }}</span>
+        {% if goal.Status != "Completed" %}
+        <a href="{{ url_for('complete_goal', goal_id=goal.Goal_ID) }}" class="btn btn-success">Mark Done</a>
+        {% endif %}
+      </li>
+      {% else %}
+      <li>No goals set yet.</li>
+      {% endfor %}
+    </ul>
 
-    <div class="dash-content">
-        <!-- Welcome Section -->
-        <div class="title">
-            <i class="uil uil-user"></i>
-            <span class="text">Welcome, {{ student.Name }}</span>
-        </div>
-        <p><strong>Grade:</strong> {{ student.Grade }} | <strong>Subjects:</strong> {{ student.Subjects }}</p>
-
-        <!-- Goals Section -->
-        <div class="title">
-            <i class="uil uil-bullseye"></i>
-            <span class="text">Your Goals</span>
-        </div>
-
-        <form action="{{ url_for('add_goal') }}" method="POST" class="goal-form">
-            <input type="text" name="goal" placeholder="Enter your study goal (e.g. Watch 2 videos)" required>
-            <button type="submit" class="btn btn-primary">Add Goal</button>
-        </form>
-
-        <ul class="goal-list">
-            {% for goal in goals %}
-            <li>
-                {{ goal.Goal_Text }} - <span class="status">{{ goal.Status }}</span>
-                {% if goal.Status != "Completed" %}
-                <a href="{{ url_for('complete_goal', goal_id=goal.Goal_ID) }}" class="btn btn-success">Mark Done</a>
-                {% endif %}
-            </li>
-            {% else %}
-            <li>No goals set yet.</li>
-            {% endfor %}
-        </ul>
-
-        <!-- Study Progress Section -->
-        <div class="title">
-            <i class="uil uil-clipboard-alt"></i>
-            <span class="text">Recent Progress</span>
-        </div>
-
-        <form action="{{ url_for('add_progress') }}" method="POST" class="progress-form">
-            <input type="date" name="date" required>
-            <input type="text" name="subject" placeholder="Subject (e.g. Math)" required>
-            <input type="text" name="activity" placeholder="Activity (e.g. Completed 2 chapters)" required>
-            <textarea name="notes" placeholder="Extra notes (optional)"></textarea>
-            <button type="submit" class="btn btn-primary">Add Progress</button>
-        </form>
-
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Subject</th>
-                    <th>Activity</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in recent_progress %}
-                <tr>
-                    <td>{{ p.Date }}</td>
-                    <td>{{ p.Subject }}</td>
-                    <td>{{ p.Activity }}</td>
-                    <td>{{ p.Notes or '-' }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4">No progress reports yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Recommendations -->
-        <div class="title">
-            <i class="uil uil-lightbulb-alt"></i>
-            <span class="text">Recommended for You</span>
-        </div>
-        <a href="{{ url_for('recommendations') }}" class="btn btn-info">View Recommendations</a>
+    <!-- Study Progress -->
+    <div class="title">
+      <i class="uil uil-clipboard-alt"></i>
+      <span class="text">Recent Progress</span>
     </div>
+    <form action="{{ url_for('add_progress') }}" method="POST" class="progress-form">
+      <input type="date" name="date" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <input type="text" name="activity" placeholder="Activity (e.g. Completed 2 chapters)" required>
+      <textarea name="notes" placeholder="Extra notes (optional)"></textarea>
+      <button type="submit" class="btn btn-primary">Add Progress</button>
+    </form>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Subject</th>
+          <th>Activity</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in recent_progress %}
+        <tr>
+          <td>{{ p.Date }}</td>
+          <td>{{ p.Subject }}</td>
+          <td>{{ p.Activity }}</td>
+          <td>{{ p.Notes or '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No progress reports yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Recommendations shortcut -->
+    <div class="title">
+      <i class="uil uil-lightbulb-alt"></i>
+      <span class="text">Recommended for You</span>
+    </div>
+    <a href="{{ url_for('recommendations') }}" class="btn btn-info">View Recommendations</a>
+  </div>
 </section>
 {% endblock %}

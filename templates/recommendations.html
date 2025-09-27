@@ -4,22 +4,22 @@
 
 {% block content %}
 <section class="dashboard">
-    <div class="top">
-        <i class="uil uil-lightbulb-alt"></i>
-        <h2>Personalized Recommendations</h2>
-    </div>
+  <div class="top">
+    <i class="uil uil-lightbulb-alt"></i>
+    <h2>Personalized Recommendations</h2>
+  </div>
 
-    <div class="recommendations">
-        <ul>
-            {% for rec in recs %}
-            <li>
-                <strong>{{ rec.title }}</strong><br>
-                <a href="{{ rec.link }}" target="_blank">Watch/Read</a>
-            </li>
-            {% else %}
-            <li>No recommendations available.</li>
-            {% endfor %}
-        </ul>
-    </div>
+  <div class="recommendations">
+    <ul>
+      {% for rec in recs %}
+      <li>
+        <strong>{{ rec.title }}</strong><br>
+        <a href="{{ rec.link }}" target="_blank">Watch/Read</a>
+      </li>
+      {% else %}
+      <li>No recommendations available.</li>
+      {% endfor %}
+    </ul>
+  </div>
 </section>
 {% endblock %}

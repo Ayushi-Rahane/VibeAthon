@@ -10,7 +10,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="imastronaut",
-    database="edutrack"
+    database="vibedb"
 )
 
 # ---------------- Dashboard ----------------

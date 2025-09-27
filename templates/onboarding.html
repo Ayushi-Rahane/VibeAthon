@@ -1,46 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Onboarding | EduTrack{% endblock %}
+{% block title %}Register | EduTrack{% endblock %}
 
 {% block content %}
 <section class="dashboard">
-    <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
-        <h2>Student Registration</h2>
-    </div>
+  <div class="top">
+    <i class="uil uil-bars sidebar-toggle"></i>
+    <h2>Student Registration</h2>
+  </div>
 
-    <div class="form-container">
-        <form action="{{ url_for('onboarding') }}" method="POST" class="student-form">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" placeholder="Enter your full name" required>
-            </div>
+  <div class="form-container">
+    <form action="{{ url_for('onboarding') }}" method="POST" class="student-form">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" placeholder="Enter your full name" required>
+      </div>
 
-            <div class="form-group">
-                <label>Grade</label>
-                <input type="text" name="grade" placeholder="e.g. 10th, 12th, B.Tech 2nd Year" required>
-            </div>
+      <div class="form-group">
+        <label>Grade</label>
+        <input type="text" name="grade" placeholder="e.g. 10th, 12th, B.Tech 2nd Year" required>
+      </div>
 
-            <div class="form-group">
-                <label>Subjects of Interest</label>
-                <input type="text" name="subjects" placeholder="e.g. Math, Physics, Python">
-            </div>
+      <div class="form-group">
+        <label>Subjects of Interest</label>
+        <input type="text" name="subjects" placeholder="e.g. Math, Physics, Python">
+      </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="Enter email" required>
-            </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Enter email" required>
+      </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Enter password" required>
-            </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password" required>
+      </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Register</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </div>
-        </form>
-    </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+    </form>
+  </div>
 </section>
 {% endblock %}

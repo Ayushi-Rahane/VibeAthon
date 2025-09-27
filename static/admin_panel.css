@@ -1,0 +1,89 @@
+/* ===== Core Styles (unchanged from your version) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+:root{
+  --primary-color:#16a085;
+  --panel-color:#FFF;
+  --text-color:#000;
+  --black-light-color:#707070;
+  --border-color:#e6e5e5;
+  --toggle-color:#DDD;
+  --box1-color:#4DA3FF;
+  --box2-color:#FFE6AC;
+  --box3-color:#E7D1FC;
+  --title-icon-color:#fff;
+  --tran-05: all 0.5s ease;
+  --tran-03: all 0.3s ease;
+}
+body{ min-height:100vh; background-color:var(--primary-color); }
+
+/* Dark mode overrides */
+body.dark{
+  --primary-color:#3A3B3C;
+  --panel-color:#242526;
+  --text-color:#CCC;
+  --black-light-color:#CCC;
+  --border-color:#4D4C4C;
+  --toggle-color:#FFF;
+  --box1-color:#3A3B3C;
+  --box2-color:#3A3B3C;
+  --box3-color:#3A3B3C;
+  --title-icon-color:#CCC;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar{ width:8px; }
+::-webkit-scrollbar-thumb{ background:var(--primary-color); border-radius:12px; }
+::-webkit-scrollbar-thumb:hover{ background:#12876f; }
+
+/* ===== NAVBAR ===== */
+nav{ position:fixed; top:0; left:0; height:100%; width:250px; padding:10px 14px;
+  background:var(--panel-color); border-right:1px solid var(--border-color); transition:var(--tran-05);}
+nav.close{ width:73px; }
+
+nav .logo-image img{ width:120px; border-radius:50%; }
+nav .menu-items{ margin-top:40px; height:calc(100% - 90px); display:flex; flex-direction:column; justify-content:space-between;}
+.menu-items li{ list-style:none; }
+.menu-items li a{ display:flex; align-items:center; height:50px; text-decoration:none; }
+.menu-items li a i{ font-size:22px; min-width:45px; text-align:center; color:var(--black-light-color);}
+.menu-items li a .link-name{ font-size:17px; color:var(--black-light-color); transition:var(--tran-05);}
+.nav-links li a:hover i, .nav-links li a:hover .link-name{ color:var(--primary-color); }
+
+/* ===== DASHBOARD ===== */
+.dashboard{ position:relative; left:250px; width:calc(100% - 250px); background:var(--panel-color); min-height:100vh; padding:15px; transition:var(--tran-05);}
+.dashboard .top{ display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--panel-color); position:fixed; top:0; left:250px; width:calc(100% - 250px); z-index:10; }
+
+/* Title sections */
+.dash-content .title{ display:flex; align-items:center; margin:60px 0 20px; }
+.dash-content .title i{ height:35px; width:35px; border-radius:6px; background:var(--primary-color); color:#fff; display:flex; align-items:center; justify-content:center; margin-right:10px; }
+
+/* ===== Forms (Progress + Goals + Onboarding) ===== */
+.form-container{ background:var(--panel-color); padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); max-width:700px; margin:20px auto;}
+.form-group{ margin-bottom:15px; display:flex; flex-direction:column;}
+.form-group label{ margin-bottom:5px; font-weight:500; color:var(--text-color);}
+.form-group input, .form-group select, .form-group textarea{ padding:10px; border:1px solid var(--border-color); border-radius:6px; background:var(--panel-color); color:var(--text-color);}
+.form-group textarea{ resize:vertical; }
+
+/* Buttons */
+.btn{ padding:10px 18px; border:none; border-radius:6px; cursor:pointer; font-size:15px;}
+.btn-primary{ background:var(--primary-color); color:#fff;}
+.btn-primary:hover{ background:#12876f;}
+.btn-secondary{ background:var(--black-light-color); color:#fff;}
+.btn-secondary:hover{ background:#555;}
+
+/* ===== Tables (Progress Reports) ===== */
+.report-table{ width:100%; border-collapse:collapse; margin-top:15px; background:var(--panel-color); border-radius:10px; overflow:hidden;}
+.report-table th{ background:var(--primary-color); color:#fff; text-align:left; padding:10px;}
+.report-table td{ padding:10px; border-bottom:1px solid var(--border-color); color:var(--text-color);}
+.report-table tr:hover{ background:rgba(22,160,133,0.1); }
+
+/* ===== Goal List ===== */
+.goal-list{ list-style:none; padding:0; margin-top:10px;}
+.goal-list li{ background:var(--panel-color); padding:10px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
+.goal-list .status{ font-weight:500; color:var(--primary-color);}
+
+/* ===== Recommendations Page ===== */
+.recommendations ul{ list-style:none; padding:0; }
+.recommendations li{ background:var(--panel-color); border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:10px; }
+.recommendations a{ color:var(--primary-color); font-weight:500; text-decoration:none;}
+.recommendations a:hover{ text-decoration:underline; }
